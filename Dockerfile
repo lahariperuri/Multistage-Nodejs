@@ -1,7 +1,7 @@
 FROM node:22-alpine as Dependencies
 WORKDIR /app
 COPY package*.json ./
-# Install dependencies
+# Install all dependencies
 RUN npm ci
 
 FROM node:22-alpine as Build
@@ -14,6 +14,7 @@ RUN npm run build
 FROM node:22-alpine as Prod
 WORKDIR /app
 COPY package*.json ./
+# install dependencies except dev env
 RUN npm ci --omit=dev
 COPY --from=Build /app/dist ./dist
 EXPOSE 3000
