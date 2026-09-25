@@ -16,4 +16,5 @@ RUN npm ci --omit=dev
 COPY --from=Build /app/dist ./dist
 EXPOSE 3000
 USER node
+# We can Start application using CMD ["npm", "start"] also
 CMD ["node","dist/index.js"]
