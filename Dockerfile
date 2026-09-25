@@ -1,12 +1,14 @@
 FROM node:22-alpine as Dependencies
 WORKDIR /app
 COPY package*.json ./
+# Install dependencies
 RUN npm ci
 
 FROM node:22-alpine as Build
 WORKDIR /app
 COPY --from=Dependencies /app/node_modules ./node_modules
 COPY . .
+# this will convert src/index.ts to dist/index.js. the dist folder will be visible in container
 RUN npm run build
 
 FROM node:22-alpine as Prod
